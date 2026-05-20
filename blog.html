@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="en" data-type="a">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Travel Kashmir Journal — Blog Archive</title>
+<meta name="description" content="Browse Travel Kashmir's Ladakh travel guides, itineraries, planning notes, food stories, and trekking articles." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  body.blog-archive { background: var(--cream); }
+  .archive-top {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: rgba(244,237,224,0.94);
+    border-bottom: 1px solid var(--rule);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    backdrop-filter: blur(10px) saturate(140%);
+  }
+  .archive-top .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+    padding: 16px 36px;
+  }
+  .archive-top .brand {
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .archive-nav {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .archive-nav a {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink-2);
+  }
+  .lang-toggle {
+    display: inline-flex;
+    padding: 3px;
+    border: 1px solid var(--rule-2);
+    background: var(--paper);
+  }
+  .lang-toggle button {
+    border: 0;
+    min-width: 44px;
+    min-height: 34px;
+    padding: 0 12px;
+    background: transparent;
+    color: var(--ink-2);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .lang-toggle button.is-active {
+    background: var(--ink);
+    color: var(--cream);
+  }
+  .archive-hero {
+    padding: 86px 0 52px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .archive-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.55fr);
+    gap: 72px;
+    align-items: end;
+  }
+  .archive-kicker,
+  .archive-count,
+  .filter-label,
+  .card-meta,
+  .card-tags span,
+  .empty-state {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .archive-kicker {
+    margin-bottom: 18px;
+    color: var(--terracotta);
+  }
+  .archive-hero h1 {
+    max-width: 9.6ch;
+    margin: 0;
+    font-size: clamp(62px, 9vw, 132px);
+    line-height: 0.88;
+  }
+  .archive-hero h1 em {
+    color: var(--terracotta);
+  }
+  .archive-lede {
+    margin: 24px 0 0;
+    max-width: 58ch;
+    font-size: 20px;
+    line-height: 1.62;
+    color: var(--ink-2);
+  }
+  .archive-hero-aside {
+    border-top: 2px solid var(--ink);
+    padding-top: 24px;
+  }
+  .archive-count {
+    color: var(--ink-2);
+  }
+  .archive-note {
+    margin: 18px 0 0;
+    font-family: var(--display);
+    font-size: clamp(28px, 3vw, 42px);
+    line-height: 1.12;
+    color: var(--ink);
+  }
+  .archive-controls {
+    position: sticky;
+    top: 67px;
+    z-index: 18;
+    background: rgba(244,237,224,0.96);
+    border-bottom: 1px solid var(--rule);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    backdrop-filter: blur(10px) saturate(140%);
+  }
+  .archive-controls .inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 18px;
+    align-items: center;
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+  .filter-label {
+    color: var(--ink-2);
+  }
+  .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .filter-row::-webkit-scrollbar {
+    display: none;
+  }
+  .filter-row button {
+    border: 1px solid var(--rule-2);
+    min-height: 38px;
+    padding: 0 14px;
+    background: transparent;
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .filter-row button.is-active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--cream);
+  }
+  .archive-body {
+    padding: 52px 0 88px;
+  }
+  .post-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 26px;
+  }
+  .post-card {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-width: 0;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    text-decoration: none;
+    color: var(--ink);
+    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  }
+  .post-card:hover,
+  .post-card:focus-visible {
+    transform: translateY(-4px);
+    border-color: rgba(147,76,47,0.48);
+    box-shadow: 0 18px 44px rgba(31,26,20,0.08);
+    outline: 0;
+  }
+  .post-card.is-disabled {
+    cursor: default;
+  }
+  .post-card.is-disabled:hover,
+  .post-card.is-disabled:focus-visible {
+    transform: none;
+    border-color: var(--rule);
+    box-shadow: none;
+  }
+  .post-card.is-disabled:hover img,
+  .post-card.is-disabled:focus-visible img {
+    transform: none;
+  }
+  .post-card figure {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    background: var(--cream-2);
+  }
+  .post-card img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    transition: transform 300ms ease;
+  }
+  .post-card:hover img,
+  .post-card:focus-visible img {
+    transform: scale(1.035);
+  }
+  .post-card .pill {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    padding: 8px 10px;
+    background: rgba(244,237,224,0.93);
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .post-card-body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 22px;
+  }
+  .card-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    color: var(--terracotta);
+  }
+  .post-card h2 {
+    margin: 14px 0 14px;
+    font-size: clamp(28px, 2.7vw, 38px);
+    line-height: 1;
+  }
+  .post-card p {
+    margin: 0 0 22px;
+    color: var(--ink-2);
+    font-size: 16px;
+    line-height: 1.58;
+  }
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 18px;
+    border-top: 1px solid var(--rule);
+  }
+  .card-tags span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    padding: 0 8px;
+    background: var(--cream);
+    color: var(--ink-2);
+    letter-spacing: 0.1em;
+  }
+  .card-status {
+    color: var(--ink-2);
+  }
+  .empty-state {
+    display: none;
+    padding: 44px 0;
+    color: var(--ink-2);
+  }
+  .archive-cta {
+    margin-top: 48px;
+    padding: 44px;
+    background: var(--ink);
+    color: var(--cream);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 28px;
+    align-items: center;
+  }
+  .archive-cta p {
+    max-width: 62ch;
+    margin: 8px 0 0;
+    color: rgba(244,237,224,0.76);
+    font-size: 17px;
+    line-height: 1.65;
+  }
+  .archive-cta h2 {
+    margin: 0;
+    color: var(--cream);
+    font-size: clamp(36px, 4.8vw, 64px);
+  }
+  .archive-cta .btn {
+    white-space: nowrap;
+    border-color: rgba(244,237,224,0.4);
+    color: var(--cream);
+  }
+  html[lang="th"] .archive-hero h1 {
+    max-width: 12ch;
+    font-size: clamp(48px, 7vw, 104px);
+    line-height: 1.03;
+  }
+  html[lang="th"] .archive-note {
+    font-size: clamp(24px, 2.6vw, 36px);
+    line-height: 1.28;
+  }
+  @media (max-width: 980px) {
+    .archive-hero-grid,
+    .archive-cta {
+      grid-template-columns: 1fr;
+    }
+    .post-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
+    .archive-top .inner {
+      padding: 12px 18px;
+      gap: 14px;
+    }
+    .archive-nav {
+      gap: 10px;
+    }
+    .archive-nav a {
+      display: none;
+    }
+    .archive-hero {
+      padding: 52px 0 34px;
+    }
+    .archive-hero-grid {
+      gap: 36px;
+    }
+    .archive-hero h1 {
+      font-size: clamp(58px, 18vw, 82px);
+    }
+    .archive-lede {
+      font-size: 18px;
+    }
+    .archive-controls {
+      position: static;
+    }
+    .archive-controls .inner {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding-top: 14px;
+      padding-bottom: 14px;
+    }
+    .filter-row {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .filter-row button {
+      flex: 0 0 auto;
+    }
+    .archive-body {
+      padding: 28px 0 56px;
+    }
+    .post-grid {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+    .post-card-body {
+      padding: 20px;
+    }
+    .post-card h2 {
+      font-size: 31px;
+    }
+    .archive-cta {
+      padding: 28px 22px;
+    }
+    html[lang="th"] .archive-hero h1 {
+      font-size: clamp(44px, 14vw, 62px);
+    }
+    html[lang="th"] .archive-note {
+      font-size: 24px;
+    }
+  }
+</style>
+</head>
+<body class="blog-archive">
+<header class="archive-top">
+  <div class="inner">
+    <a class="brand" href="index.html" aria-label="Travel Kashmir home">Travel Kashmir</a>
+    <nav class="archive-nav" aria-label="Archive navigation">
+      <a href="index.html" data-i18n="navHome">Home</a>
+      <a href="blog/7-day-ladakh-itinerary.html" data-i18n="navPost">Latest post</a>
+      <div class="lang-toggle" aria-label="Language">
+        <button type="button" class="is-active" data-lang="en" aria-pressed="true">Eng</button>
+        <button type="button" data-lang="th" aria-pressed="false">ไทย</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="archive-hero">
+    <div class="container archive-hero-grid">
+      <div>
+        <div class="archive-kicker" data-i18n="kicker">Travel Kashmir Journal</div>
+        <h1 data-i18n-html="heroTitle">Field notes from <em>Ladakh.</em></h1>
+        <p class="archive-lede" data-i18n="lede">Itineraries, road guides, monastery notes, food stories, and practical planning advice for slow journeys across the high Himalaya.</p>
+      </div>
+      <aside class="archive-hero-aside">
+        <div class="archive-count" data-i18n="count">20 available guides</div>
+        <p class="archive-note" data-i18n="note">Choose a route, plan the season, and keep one quiet day for the mountains to do their work.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="archive-controls" aria-label="Blog filters">
+    <div class="container inner">
+      <div class="filter-label" data-i18n="filterLabel">Filter by mood</div>
+      <div class="filter-row" id="filters"></div>
+    </div>
+  </section>
+
+  <section class="archive-body">
+    <div class="container">
+      <div class="post-grid" id="postGrid"></div>
+      <div class="empty-state" id="emptyState" data-i18n="empty">No guides match this filter yet.</div>
+      <section class="archive-cta">
+        <div>
+          <h2 data-i18n="ctaTitle">Prefer a human-planned route?</h2>
+          <p data-i18n="ctaBody">Send us your travel dates and pace. We will shape the Ladakh circuit around altitude, road time, and the kind of moments you actually want to remember.</p>
+        </div>
+        <a class="btn" href="index.html#enquire" data-i18n="ctaButton">Plan my trip</a>
+      </section>
+    </div>
+  </section>
+</main>
+
+<script>
+  const copy = {
+    en: {
+      navHome: "Home",
+      navPost: "Latest post",
+      kicker: "Travel Kashmir Journal",
+      heroTitle: "Field notes from <em>Ladakh.</em>",
+      lede: "Itineraries, road guides, monastery notes, food stories, and practical planning advice for slow journeys across the high Himalaya.",
+      count: "20 topics · 1 full article",
+      note: "Choose a route, plan the season, and keep one quiet day for the mountains to do their work.",
+      filterLabel: "Filter by mood",
+      empty: "No guides match this filter yet.",
+      ctaTitle: "Prefer a human-planned route?",
+      ctaBody: "Send us your travel dates and pace. We will shape the Ladakh circuit around altitude, road time, and the kind of moments you actually want to remember.",
+      ctaButton: "Plan my trip",
+      read: "Read guide",
+      min: "min read",
+      comingSoon: "Coming soon"
+    },
+    th: {
+      navHome: "หน้าแรก",
+      navPost: "บทความล่าสุด",
+      kicker: "บันทึกเดินทาง Travel Kashmir",
+      heroTitle: "เรื่องเล่าจาก <em>ลาดักห์</em>",
+      lede: "รวมแผนเที่ยว เส้นทางขับรถ วัดทิเบต อาหารท้องถิ่น และคำแนะนำสำหรับการเดินทางช้า ๆ บนเทือกเขาหิมาลัย",
+      count: "20 หัวข้อ · มีบทความเต็ม 1 บทความ",
+      note: "เลือกเส้นทาง วางฤดูกาลให้ดี และเผื่อวันว่างหนึ่งวันให้ภูเขาได้ทำหน้าที่ของมัน",
+      filterLabel: "กรองตามหัวข้อ",
+      empty: "ยังไม่มีบทความในหมวดนี้",
+      ctaTitle: "อยากให้เราช่วยวางแผนเส้นทางไหม?",
+      ctaBody: "ส่งวันที่เดินทางและสไตล์ที่ชอบมาให้เรา เราจะช่วยจัดเส้นทางลาดักห์โดยคำนึงถึงความสูง เวลาเดินทาง และช่วงเวลาที่ควรค่าแก่การจดจำ",
+      ctaButton: "ให้ช่วยวางแผน",
+      read: "อ่านบทความ",
+      min: "นาที",
+      comingSoon: "เร็ว ๆ นี้"
+    }
+  };
+
+  const filters = [
+    { id: "all", en: "All", th: "ทั้งหมด" },
+    { id: "itineraries", en: "Itineraries", th: "แผนเที่ยว" },
+    { id: "places", en: "Places", th: "สถานที่" },
+    { id: "planning", en: "Planning", th: "วางแผน" },
+    { id: "culture", en: "Food & Culture", th: "อาหารและวัฒนธรรม" },
+    { id: "treks", en: "Treks", th: "เดินเขา" },
+    { id: "winter", en: "Winter", th: "ฤดูหนาว" }
+  ];
+
+  const posts = [
+    {
+      slug: "10-days-ladakh-itinerary",
+      category: "itineraries",
+      image: "uploads/img-02.png",
+      readTime: 16,
+      tags: ["ladakh", "tso moriri", "lamayuru"],
+      en: {
+        title: "10 Days in Ladakh | The Road Less Travelled Itinerary",
+        excerpt: "The deeper Ladakh route through Nubra, Turtuk, Pangong, Alchi, Lamayuru, and Tso Moriri."
+      },
+      th: {
+        title: "เที่ยวลาดักห์ 10 วัน | เส้นทางที่ลึกกว่าเส้นทางมาตรฐาน",
+        excerpt: "เส้นทางลาดักห์แบบลึกขึ้น ผ่านนูบร้า ทูร์ทุค แพงกอง อัลชี ลามายูรู และทะเลสาบโซโมรีรี"
+      }
+    },
+    {
+      slug: "3-days-in-leh-itinerary",
+      category: "itineraries",
+      image: "uploads/img-07.png",
+      readTime: 12,
+      tags: ["leh", "first timer", "monasteries"],
+      en: {
+        title: "How To Spend 3 Days in Leh | A First-Timer's Complete Itinerary",
+        excerpt: "A focused Leh plan for first-timers: acclimatisation, monasteries, mountain views, and markets."
+      },
+      th: {
+        title: "เที่ยวเลห์ 3 วัน | แผนเที่ยวสำหรับครั้งแรก",
+        excerpt: "แผนเที่ยวเลห์แบบไม่เร่ง สำหรับปรับตัวกับความสูง วัด วิวภูเขา และตลาดท้องถิ่น"
+      }
+    },
+    {
+      slug: "7-day-ladakh-itinerary",
+      url: "blog/7-day-ladakh-itinerary.html",
+      category: "itineraries",
+      image: "uploads/img-01.png",
+      readTime: 14,
+      tags: ["leh", "nubra", "pangong"],
+      en: {
+        title: "The Perfect 7-Day Ladakh Itinerary | Leh, Nubra, Pangong & Back",
+        excerpt: "The classic Ladakh circuit with Leh, Khardung La, Nubra Valley, Turtuk, and Pangong Lake."
+      },
+      th: {
+        title: "แผนเที่ยวลาดักห์ 7 วันที่ลงตัว | เลห์ นูบร้า แพงกอง",
+        excerpt: "เส้นทางยอดนิยมของลาดักห์ ผ่านเลห์ คาร์ดุงลา นูบร้า ทูร์ทุค และทะเลสาบแพงกอง"
+      }
+    },
+    {
+      slug: "best-monasteries-ladakh",
+      category: "culture",
+      image: "uploads/img-08.png",
+      readTime: 11,
+      tags: ["monasteries", "buddhism", "culture"],
+      en: {
+        title: "The Best Monasteries in Ladakh | Thiksey, Hemis, Diskit & More",
+        excerpt: "The essential gompas to visit, with practical notes on timing, entry, and atmosphere."
+      },
+      th: {
+        title: "วัดที่ควรไปในลาดักห์ | ทิกเซย์ เฮมิส ดิสกิต และอีกหลายแห่ง",
+        excerpt: "รวมกอมปาสำคัญ พร้อมเวลาแนะนำ ค่าเข้า และบรรยากาศของแต่ละวัด"
+      }
+    },
+    {
+      slug: "best-time-to-visit-ladakh",
+      category: "planning",
+      image: "uploads/img-12.png",
+      readTime: 10,
+      tags: ["season", "planning", "weather"],
+      en: {
+        title: "The Best Time To Visit Ladakh | An Honest Month-by-Month Guide",
+        excerpt: "A season-by-season guide for choosing the right Ladakh window, from spring to winter."
+      },
+      th: {
+        title: "ช่วงเวลาที่ดีที่สุดในการไปลาดักห์ | คู่มือรายเดือนแบบตรงไปตรงมา",
+        excerpt: "คู่มือเลือกฤดูกาลที่เหมาะกับทริปลาดักห์ ตั้งแต่ใบไม้ผลิถึงฤดูหนาว"
+      }
+    },
+    {
+      slug: "how-to-get-around-ladakh",
+      category: "planning",
+      image: "uploads/img-18.png",
+      readTime: 9,
+      tags: ["transport", "taxi", "self drive"],
+      en: {
+        title: "How To Get Around Ladakh | Taxis, Shared Jeeps & Self-Drive",
+        excerpt: "How transport really works in Ladakh: taxi stands, shared jeeps, fares, and rentals."
+      },
+      th: {
+        title: "เดินทางในลาดักห์อย่างไร | แท็กซี่ รถจี๊ปร่วม และขับเอง",
+        excerpt: "อธิบายการเดินทางในลาดักห์จริง ๆ ทั้งแท็กซี่ รถจี๊ปร่วม ราคา และการเช่ารถ"
+      }
+    },
+    {
+      slug: "how-to-get-to-leh-ladakh",
+      category: "planning",
+      image: "uploads/img-20.png",
+      readTime: 10,
+      tags: ["flights", "roads", "leh"],
+      en: {
+        title: "How To Get To Leh Ladakh | Flights, Roads & What To Know",
+        excerpt: "Flights from Delhi, Manali-Leh highway, Srinagar-Leh road, timings, and trade-offs."
+      },
+      th: {
+        title: "ไปเลห์ ลาดักห์อย่างไร | เที่ยวบิน ถนน และสิ่งที่ควรรู้",
+        excerpt: "เทียบเที่ยวบินจากเดลี ถนนมะนาลี-เลห์ ถนนศรีนาการ์-เลห์ เวลาเดินทาง และข้อควรรู้"
+      }
+    },
+    {
+      slug: "ladakh-travel-tips",
+      category: "planning",
+      image: "uploads/img-22.png",
+      readTime: 11,
+      tags: ["altitude", "permits", "packing"],
+      en: {
+        title: "15 Things To Know Before You Visit Ladakh | Essential Tips for First-Timers",
+        excerpt: "Altitude, permits, cash, connectivity, packing, and etiquette for first-time visitors."
+      },
+      th: {
+        title: "15 เรื่องควรรู้ก่อนไปลาดักห์ | เคล็ดลับสำหรับครั้งแรก",
+        excerpt: "เรื่องความสูง ใบอนุญาต เงินสด สัญญาณมือถือ การจัดกระเป๋า และมารยาทท้องถิ่น"
+      }
+    },
+    {
+      slug: "ladakh-winter-travel",
+      category: "winter",
+      image: "uploads/img-24.png",
+      readTime: 10,
+      tags: ["winter", "chadar", "snow leopard"],
+      en: {
+        title: "Visiting Ladakh in Winter | What It's Really Like When the Roads Close",
+        excerpt: "Cold, quiet, remote, and extraordinary: what to expect when Ladakh enters winter."
+      },
+      th: {
+        title: "ไปลาดักห์ฤดูหนาว | เมื่อถนนปิดและโลกเงียบลง",
+        excerpt: "หนาว เงียบ ไกล และน่าจดจำ นี่คือสิ่งที่ควรรู้เมื่อลาดักห์เข้าสู่ฤดูหนาว"
+      }
+    },
+    {
+      slug: "leh-ladakh-travel-guide",
+      category: "planning",
+      image: "uploads/img-26.png",
+      readTime: 15,
+      tags: ["guide", "leh", "ladakh"],
+      en: {
+        title: "The Leh Ladakh Travel Guide | Everything You Need to Plan Your Trip",
+        excerpt: "The complete planning overview: permits, altitude, best season, highlights, and route ideas."
+      },
+      th: {
+        title: "คู่มือเที่ยวเลห์ ลาดักห์ | ทุกอย่างที่ต้องรู้ก่อนวางแผน",
+        excerpt: "ภาพรวมการวางแผน ทั้งใบอนุญาต ความสูง ฤดูกาล ไฮไลต์ และไอเดียเส้นทาง"
+      }
+    },
+    {
+      slug: "leh-to-nubra-valley-khardung-la",
+      category: "places",
+      image: "uploads/img-13.png",
+      readTime: 9,
+      tags: ["nubra", "khardung la", "hunder"],
+      en: {
+        title: "How To Get From Leh to Nubra Valley via Khardung La",
+        excerpt: "Route, permits, road conditions, and what to see after crossing Khardung La."
+      },
+      th: {
+        title: "จากเลห์สู่นูบร้าวัลเลย์ผ่านคาร์ดุงลา",
+        excerpt: "เส้นทาง ใบอนุญาต สภาพถนน และจุดแวะหลังข้ามคาร์ดุงลา"
+      }
+    },
+    {
+      slug: "leh-to-pangong-lake",
+      category: "places",
+      image: "uploads/img-04.png",
+      readTime: 9,
+      tags: ["pangong", "chang la", "permit"],
+      en: {
+        title: "How To Get From Leh to Pangong Lake | Route, Permits & Tips",
+        excerpt: "Chang La, Inner Line Permits, overnight stays, and why dawn at Pangong matters."
+      },
+      th: {
+        title: "จากเลห์ไปทะเลสาบแพงกอง | เส้นทาง ใบอนุญาต และเคล็ดลับ",
+        excerpt: "เส้นทางผ่านชางลา ใบอนุญาต ที่พักค้างคืน และเหตุผลที่ควรอยู่ดูแสงเช้า"
+      }
+    },
+    {
+      slug: "markha-valley-trek",
+      category: "treks",
+      image: "uploads/img-30.png",
+      readTime: 12,
+      tags: ["markha", "trekking", "homestays"],
+      en: {
+        title: "Trekking the Markha Valley | Ladakh's Most Beloved Trek Route",
+        excerpt: "Route stages, altitude profile, best season, guide options, packing, and village stays."
+      },
+      th: {
+        title: "เดินเทรก Markha Valley | เส้นทางเดินเขายอดนิยมของลาดักห์",
+        excerpt: "ช่วงเส้นทาง ความสูง ฤดูกาล ไกด์ การจัดกระเป๋า และโฮมสเตย์ในหมู่บ้าน"
+      }
+    },
+    {
+      slug: "nubra-valley-guide",
+      category: "places",
+      image: "uploads/img-31.png",
+      readTime: 10,
+      tags: ["nubra", "diskit", "turtuk"],
+      en: {
+        title: "A Guide to Nubra Valley | Ladakh's Sand Dunes, Camels and Monasteries",
+        excerpt: "How to get there, what to see in Hunder, Diskit, and Turtuk, plus where to stay."
+      },
+      th: {
+        title: "คู่มือนูบร้าวัลเลย์ | เนินทราย อูฐ และวัดกลางหุบเขา",
+        excerpt: "การเดินทาง จุดเที่ยวในฮุนเดอร์ ดิสกิต ทูร์ทุค และที่พักที่ควรรู้"
+      }
+    },
+    {
+      slug: "pangong-lake-guide",
+      category: "places",
+      image: "uploads/img-32.png",
+      readTime: 10,
+      tags: ["pangong", "spangmik", "overnight"],
+      en: {
+        title: "A Guide to Pangong Lake | Ladakh's Iconic Himalayan Mirror",
+        excerpt: "Permits, routes, camps in Spangmik, and the quiet reason to sleep beside the lake."
+      },
+      th: {
+        title: "คู่มือทะเลสาบแพงกอง | กระจกแห่งหิมาลัย",
+        excerpt: "ใบอนุญาต เส้นทาง แคมป์ที่สแปงมิก และเหตุผลที่ควรค้างคืนริมทะเลสาบ"
+      }
+    },
+    {
+      slug: "things-to-do-ladakh",
+      category: "places",
+      image: "uploads/img-36.png",
+      readTime: 12,
+      tags: ["things to do", "adventure", "himalaya"],
+      en: {
+        title: "15 Wonderful Things To Do in Ladakh | Beyond the Monasteries",
+        excerpt: "Landscapes, high passes, adventure, hidden corners, and the classic sights worth the journey."
+      },
+      th: {
+        title: "15 สิ่งน่าทำในลาดักห์ | มากกว่าวัดและภูเขา",
+        excerpt: "ภูมิประเทศ ช่องเขาสูง กิจกรรมผจญภัย มุมซ่อนเร้น และไฮไลต์ที่คุ้มค่าเดินทาง"
+      }
+    },
+    {
+      slug: "things-to-do-leh-town",
+      category: "places",
+      image: "uploads/img-39.png",
+      readTime: 8,
+      tags: ["leh", "markets", "palaces"],
+      en: {
+        title: "10 Things To Do in Leh Town | Markets, Palaces & Mountain Views",
+        excerpt: "A gentle Leh town guide for arrival days: palaces, bazaars, stupas, and food."
+      },
+      th: {
+        title: "10 สิ่งน่าทำในเมืองเลห์ | ตลาด พระราชวัง และวิวภูเขา",
+        excerpt: "คู่มือเที่ยวเมืองเลห์แบบเบา ๆ สำหรับวันแรก ทั้งวัง ตลาด สถูป และอาหาร"
+      }
+    },
+    {
+      slug: "what-to-eat-in-ladakh",
+      category: "culture",
+      image: "uploads/img-45.png",
+      readTime: 11,
+      tags: ["food", "thukpa", "momos"],
+      en: {
+        title: "What To Eat in Ladakh | A Guide to Thukpa, Momos, Butter Tea & Local Favourites",
+        excerpt: "The warming dishes, drinks, snacks, and local flavours that make Ladakh memorable."
+      },
+      th: {
+        title: "กินอะไรดีในลาดักห์ | ทุกปา โมโม ชาเนย และของอร่อยท้องถิ่น",
+        excerpt: "อาหาร เครื่องดื่ม ขนม และรสชาติท้องถิ่นที่ทำให้ลาดักห์น่าจดจำ"
+      }
+    },
+    {
+      slug: "where-to-stay-in-leh",
+      category: "planning",
+      image: "uploads/img-50.png",
+      readTime: 11,
+      tags: ["leh", "hotels", "homestays"],
+      en: {
+        title: "Where To Stay in Leh Ladakh | Guesthouses, Heritage Hotels & Pangong Camps",
+        excerpt: "Neighbourhoods, budgets, homestays, heritage properties, and camps beyond Leh."
+      },
+      th: {
+        title: "พักที่ไหนดีในเลห์ ลาดักห์ | เกสต์เฮาส์ โรงแรมเฮอริเทจ และแคมป์",
+        excerpt: "ย่านที่พัก งบประมาณ โฮมสเตย์ โรงแรมเฮอริเทจ และแคมป์นอกเมืองเลห์"
+      }
+    },
+    {
+      slug: "zanskar-valley-guide",
+      category: "treks",
+      image: "uploads/img-57.png",
+      readTime: 12,
+      tags: ["zanskar", "phugtal", "remote"],
+      en: {
+        title: "A Guide to Zanskar Valley | Ladakh's Most Remote and Rewarding Region",
+        excerpt: "How to reach Padum, Phugtal Monastery, trekking routes, and why Zanskar needs time."
+      },
+      th: {
+        title: "คู่มือ Zanskar Valley | ดินแดนไกลและคุ้มค่าที่สุดของลาดักห์",
+        excerpt: "วิธีไปปาดุม วัดฟุกทัล เส้นทางเดินเขา และเหตุผลที่ซันสการ์ต้องใช้เวลา"
+      }
+    }
+  ];
+
+  let activeLang = "en";
+  let activeFilter = "all";
+
+  const filtersEl = document.querySelector("#filters");
+  const gridEl = document.querySelector("#postGrid");
+  const emptyEl = document.querySelector("#emptyState");
+  const langButtons = document.querySelectorAll("[data-lang]");
+
+  function renderStaticCopy() {
+    document.documentElement.lang = activeLang === "th" ? "th" : "en";
+    document.querySelectorAll("[data-i18n]").forEach((node) => {
+      node.textContent = copy[activeLang][node.dataset.i18n];
+    });
+    document.querySelectorAll("[data-i18n-html]").forEach((node) => {
+      node.innerHTML = copy[activeLang][node.dataset.i18nHtml];
+    });
+  }
+
+  function renderFilters() {
+    filtersEl.innerHTML = filters.map((filter) => `
+      <button type="button" class="${filter.id === activeFilter ? "is-active" : ""}" data-filter="${filter.id}" aria-pressed="${filter.id === activeFilter}">
+        ${filter[activeLang]}
+      </button>
+    `).join("");
+  }
+
+  function cardTemplate(post) {
+    const text = post[activeLang];
+    const filter = filters.find((item) => item.id === post.category);
+    const isLive = Boolean(post.url);
+    const tag = isLive ? "a" : "article";
+    const href = isLive ? ` href="${post.url}"` : "";
+    const status = isLive ? copy[activeLang].read : copy[activeLang].comingSoon;
+    return `
+      <${tag} class="post-card ${isLive ? "" : "is-disabled"}" ${href} data-category="${post.category}" aria-label="${text.title}">
+        <figure>
+          <img src="${post.image}" alt="" />
+          <span class="pill">${filter ? filter[activeLang] : post.category}</span>
+        </figure>
+        <div class="post-card-body">
+          <div class="card-meta">
+            <span class="${isLive ? "" : "card-status"}">${status}</span>
+            <span>${post.readTime} ${copy[activeLang].min}</span>
+          </div>
+          <h2>${text.title}</h2>
+          <p>${text.excerpt}</p>
+          <div class="card-tags">
+            ${post.tags.slice(0, 3).map((tag) => `<span>${tag}</span>`).join("")}
+          </div>
+        </div>
+      </${tag}>
+    `;
+  }
+
+  function renderPosts() {
+    const visiblePosts = activeFilter === "all"
+      ? posts
+      : posts.filter((post) => post.category === activeFilter);
+    gridEl.innerHTML = visiblePosts.map(cardTemplate).join("");
+    emptyEl.style.display = visiblePosts.length ? "none" : "block";
+  }
+
+  function render() {
+    renderStaticCopy();
+    renderFilters();
+    renderPosts();
+    langButtons.forEach((button) => {
+      const isActive = button.dataset.lang === activeLang;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", String(isActive));
+    });
+  }
+
+  filtersEl.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-filter]");
+    if (!button) return;
+    activeFilter = button.dataset.filter;
+    render();
+  });
+
+  langButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      activeLang = button.dataset.lang;
+      render();
+    });
+  });
+
+  render();
+</script>
+</body>
+</html>
